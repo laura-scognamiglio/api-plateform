@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\GroupeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
@@ -23,6 +25,14 @@ class Groupe
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: User::class)]
+    private Collection $user_groupe;
+
+    public function __construct()
+    {
+        $this->user_groupe = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,6 +71,36 @@ class Groupe
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUserGroupe(): Collection
+    {
+        return $this->user_groupe;
+    }
+
+    public function addUserGroupe(User $userGroupe): self
+    {
+        if (!$this->user_groupe->contains($userGroupe)) {
+            $this->user_groupe->add($userGroupe);
+            $userGroupe->setGroupe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserGroupe(User $userGroupe): self
+    {
+        if ($this->user_groupe->removeElement($userGroupe)) {
+            // set the owning side to null (unless already changed)
+            if ($userGroupe->getGroupe() === $this) {
+                $userGroupe->setGroupe(null);
+            }
+        }
 
         return $this;
     }
