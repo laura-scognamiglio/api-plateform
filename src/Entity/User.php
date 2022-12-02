@@ -37,21 +37,25 @@ class User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstname = null;
 
-     /**
+    /**
      * @ORM\Column(type="text")
      *
      * @Groups({"user:read", "user:write", "groupe:read"})
      */
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
-
+    /** 
+     * @ORM\Column(type="text")
+     *
+     * @Groups({"user:read", "user:write", "groupe:read"})
+     */
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-     /**
+    /**
      * @ORM\Column(type="datetime")
      *
      * @Groups({"user:read", "groupe:read"})
@@ -59,7 +63,7 @@ class User
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
-     /**
+    /**
      * @ORM\Column(type="datetime")
      *
      * @Groups({"user:read", "groupe:read"})
