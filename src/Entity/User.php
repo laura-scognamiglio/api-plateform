@@ -6,27 +6,42 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\GetCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-
 
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(operations: [
     new Get(),
-    new GetCollection()
+    new GetCollection(),
+    new Post(),
 ])]
 class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    /**
+     *
+     * @Groups({"user:read", "groupe:read"})
+     */
     private ?int $id = null;
 
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @Groups({"user:read", "user:write", "groupe:read"})
+     */
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstname = null;
 
+     /**
+     * @ORM\Column(type="text")
+     *
+     * @Groups({"user:read", "user:write", "groupe:read"})
+     */
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 
@@ -36,15 +51,27 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+     /**
+     * @ORM\Column(type="datetime")
+     *
+     * @Groups({"user:read", "groupe:read"})
+     */
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
+     /**
+     * @ORM\Column(type="datetime")
+     *
+     * @Groups({"user:read", "groupe:read"})
+     */
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Groupe", inversedBy="user-groupe")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Groupe", inversedBy="user_groupe")
+     * @ORM\JoinColumn(nullable=true)
+     * 
+     * 
      */
     #[ORM\ManyToOne(inversedBy: 'user_groupe')]
     private ?Groupe $groupe = null;
@@ -126,6 +153,7 @@ class User
         return $this;
     }
 
+   
     public function getGroupe(): ?Groupe
     {
         return $this->groupe;

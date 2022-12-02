@@ -7,9 +7,21 @@ use App\Repository\GroupeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+
+
+
 
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
-#[ApiResource]
+#[ApiResource(operations: [
+    new Get(),
+    new GetCollection(),
+    new Post(),
+])]
 class Groupe
 {
     #[ORM\Id]
@@ -26,6 +38,11 @@ class Groupe
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+      /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="user", orphanRemoval=true)
+     * 
+     * @Groups("user:read")
+     */
     #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: User::class)]
     private Collection $user_groupe;
 
