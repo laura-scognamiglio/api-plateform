@@ -14,7 +14,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(operations: [
-    new Get(),
+    new Get(uriTemplate: '/users/{id}', 
+    requirements: ['id' => '\d+'], 
+    defaults: ['color' => 'brown'], 
+    schemes: ['https'], 
+    host: '{subdomain}.api-platform.com'),
     new GetCollection(),
     new Post(),
 ])]

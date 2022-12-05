@@ -33,7 +33,7 @@ services:
     tags:
       - { name: serializer.normalizer }
 
-  App\OpenApi\OpenApiFactory:
-    decorates: "api_platform.openapi.factory"
-    arguments: ["@.inner"]
-    autoconfigure: false
+#   App\OpenApi\OpenApiFactory:
+#     decorates: "api_platform.openapi.factory"
+#     arguments: ["@.inner"]
+#     autoconfigure: false
